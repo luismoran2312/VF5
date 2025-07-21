@@ -74,12 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // === CARRUSEL DE SERVICIOS ===
   const botonesServicio = document.querySelectorAll('.btn-servicio');
-  const carrusel = document.querySelector('.carrusel-servicios'); // <-- DECLARADA SOLO UNA VEZ
+  const carrusel = document.querySelector('.carrusel-servicios');
   const secciones = Array.from(document.querySelectorAll('.detalle-servicio'));
   const paginacion = document.querySelector('.paginacion-servicios');
   const flechaIzquierda = document.querySelector('.flecha.izquierda');
   const flechaDerecha = document.querySelector('.flecha.derecha');
-  const cerrarBtn = document.querySelector('.cerrar-modal');
 
   let indiceActual = 0;
   let puntos = [];
@@ -123,24 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         indiceActual = idx;
         cambiarSeccion();
         carrusel.classList.remove('oculto');
-        
-        // Opcional: cerrar menú móvil si existe
+
         if (window.innerWidth <= 768) {
-          if (typeof menuNav !== 'undefined' && menuNav) menuNav.classList.remove('visible');
-          if (typeof menuBtn !== 'undefined' && menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+          if (menuNav) menuNav.classList.remove('visible');
+          if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
         }
       }
     });
   });
 
-  // Botón cerrar carrusel
-  if (cerrarBtn && carrusel) {
-    cerrarBtn.addEventListener('click', () => {
-      carrusel.classList.add('oculto'); // mejor ocultarlo que remover 'activo' solo, si así lo defines en CSS
-    });
-  }
-
-  // Flechas para navegar
+  // Flechas
   if (flechaIzquierda && flechaDerecha) {
     flechaIzquierda.addEventListener('click', () => {
       indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
@@ -162,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', e => {
       e.preventDefault();
       const targetId = link.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
       const idx = secciones.findIndex(sec => sec.id === targetId);
 
       if (idx !== -1) {
@@ -308,4 +300,41 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcWidth();
     animate();
   }
+
+
+
+
+
+
+
+
+  const isMobile = window.innerWidth <= 768;
+  const cerrarBtn = document.querySelector(".cerrar-modal"); 
+  if (isMobile) {
+    // Manejar clic en botones "Ver más"
+    document.querySelectorAll(".btn-servicio").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.dataset.target;
+
+        // Mostrar modal
+        carrusel.classList.add("activo");
+
+        // Mostrar solo la sección correspondiente
+        document.querySelectorAll(".detalle-servicio").forEach(seccion => {
+          seccion.classList.remove("activo");
+          if (seccion.id === targetId) {
+            seccion.classList.add("activo");
+          }
+        });
+      });
+    });
+    
+    // Cerrar modal con botón "X"
+    if (cerrarBtn) {
+      cerrarBtn.addEventListener("click", () => {
+        carrusel.classList.remove("activo");
+      });
+    }
+  }
+
 });
