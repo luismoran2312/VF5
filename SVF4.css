@@ -1142,7 +1142,7 @@ button:focus {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: #ffffff;
+    background: transparent;
     z-index: 1000;
     padding: 1.5em 1em;
     display: none; /* Oculto por defecto */
@@ -1163,7 +1163,7 @@ button:focus {
     border: none;
     cursor: pointer;
     z-index: 1100;
-    color: #000; /* o el color que prefieras */
+    color: var(--dark-purple); /* o el color que prefieras */
   }
 
   /* Ocultar elementos innecesarios en móvil */

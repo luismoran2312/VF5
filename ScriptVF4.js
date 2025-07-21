@@ -169,20 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // === SUBMENÚ EN MÓVIL ===
-  const dropdownToggle = document.querySelector('.dropdown-toggle');
-  const dropdown = document.querySelector('.dropdown');
-  if (dropdownToggle && dropdown) {
-    dropdownToggle.addEventListener('click', e => {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        const isOpen = dropdown.classList.contains('abierto');
-        dropdown.classList.toggle('abierto', !isOpen);
-        dropdownToggle.setAttribute('aria-expanded', (!isOpen).toString());
-      }
-    });
-  }
-
   // === CERRAR CARRUSEL SI HACES CLIC FUERA DE SU CONTENIDO ===
   const carruselContenido = document.querySelector('.carrusel-contenido');
   if (carrusel && carruselContenido) {
@@ -311,30 +297,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const isMobile = window.innerWidth <= 768;
   const cerrarBtn = document.querySelector(".cerrar-modal"); 
   if (isMobile) {
-    // Manejar clic en botones "Ver más"
-    document.querySelectorAll(".btn-servicio").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const targetId = btn.dataset.target;
+  // Manejar clic en botones "Ver más"
+  document.querySelectorAll(".btn-servicio").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.dataset.target;
 
-        // Mostrar modal
-        carrusel.classList.add("activo");
+      // Mostrar modal (carrusel)
+      carrusel.classList.add("activo");
+      carrusel.classList.remove("oculto");
 
-        // Mostrar solo la sección correspondiente
-        document.querySelectorAll(".detalle-servicio").forEach(seccion => {
-          seccion.classList.remove("activo");
-          if (seccion.id === targetId) {
-            seccion.classList.add("activo");
-          }
-        });
+      // Mostrar solo la sección correspondiente
+      document.querySelectorAll(".detalle-servicio").forEach(seccion => {
+        seccion.classList.remove("activo");
+        seccion.classList.add("oculto");
+        if (seccion.id === targetId) {
+          seccion.classList.add("activo");
+          seccion.classList.remove("oculto");
+        }
       });
     });
-    
-    // Cerrar modal con botón "X"
-    if (cerrarBtn) {
-      cerrarBtn.addEventListener("click", () => {
-        carrusel.classList.remove("activo");
-      });
-    }
+  });
+
+  // Cerrar modal con botón "X"
+  if (cerrarBtn) {
+    cerrarBtn.addEventListener("click", () => {
+      carrusel.classList.remove("activo");
+      carrusel.classList.add("oculto");
+    });
   }
+}
 
 });
