@@ -287,15 +287,17 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   }
 
-
-
-
-
-
-
-
   const isMobile = window.innerWidth <= 768;
   const cerrarBtn = document.querySelector(".cerrar-modal"); 
+
+  // Cerrar modal con botón "X"
+  if (cerrarBtn) {
+    cerrarBtn.addEventListener("click", () => {
+      carrusel.classList.remove("activo");
+      carrusel.classList.add("oculto");
+    });
+  }
+
   if (isMobile) {
   // Manejar clic en botones "Ver más"
   document.querySelectorAll(".btn-servicio").forEach(btn => {
@@ -318,13 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Cerrar modal con botón "X"
-  if (cerrarBtn) {
-    cerrarBtn.addEventListener("click", () => {
-      carrusel.classList.remove("activo");
-      carrusel.classList.add("oculto");
-    });
-  }
+  
 }
 
 });
