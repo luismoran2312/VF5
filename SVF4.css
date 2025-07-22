@@ -956,7 +956,6 @@ button:focus {
       width: 100vw;
       height: 140px; /* Ancho */
       overflow: hidden;
-     /* background: linear-gradient(135deg, #1f1c2c, #928dab);*/
       box-shadow:
         0 4px 15px rgba(146, 137, 171, 0.5),
         inset 0 0 40px rgba(255, 255, 255, 0.1);
@@ -1133,6 +1132,10 @@ button:focus {
   }
 }
 
+.cerrar-carrusel {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   /* Carrusel como modal pantalla completa */
   .carrusel-servicios {
@@ -1142,7 +1145,7 @@ button:focus {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background: transparent;
+    background: var(--glass-bg);
     z-index: 1000;
     padding: 1.5em 1em;
     display: none; /* Oculto por defecto */
@@ -1165,5 +1168,28 @@ button:focus {
 
   .contenedor-servicios > section.activo {
     display: block;
+  }
+
+  .cerrar-carrusel {
+    display: block;
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: var(--main-purple);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1050;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+  }
+
+  .cerrar-carrusel:hover {
+    background-color: var(--hover-color);
   }
 }
