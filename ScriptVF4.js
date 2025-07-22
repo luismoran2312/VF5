@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const isDesktop = window.innerWidth > 768;
-  const cerrarBtn = document.querySelector(".cerrar-modal"); 
+  const cerrarBtn = document.querySelector(".cerrar-modal");
 
   // === ACTIVACIÓN DE BOTONES DEL MENÚ EN ESCRITORIO ===
   if (isDesktop) {
@@ -123,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         indiceActual = idx;
         cambiarSeccion();
         carrusel.classList.remove('oculto');
-
         if (window.innerWidth <= 768) {
-          if (menuNav) menuNav.classList.remove('visible');
-          if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+          carrusel.classList.add('activo'); // ✅ Necesario en móviles
         }
+        if (typeof menuNav !== 'undefined' && menuNav) menuNav.classList.remove('visible');
+        if (typeof menuBtn !== 'undefined' && menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
       }
     });
   });
@@ -158,11 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const idx = secciones.findIndex(sec => sec.id === targetId);
 
       if (idx !== -1) {
-        carrusel.classList.remove('oculto');
         indiceActual = idx;
         cambiarSeccion();
-
-        // Scroll al carrusel (no solo a la sección)
+        carrusel.classList.remove('oculto');
+        if (window.innerWidth <= 768) {
+          carrusel.classList.add('activo'); // ✅ Necesario en móviles
+        }
         setTimeout(() => {
           carrusel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
@@ -171,30 +172,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // === CERRAR CARRUSEL SI HACES CLIC FUERA DE SU CONTENIDO ===
-const carruselContenido = document.querySelector('.carrusel-contenido');
-if (carrusel && carruselContenido) {
-
-  // Evitar cierre si haces clic dentro del contenido
-  carruselContenido.addEventListener('click', e => {
-    e.stopPropagation();
-  });
-
-  // Cerrar si haces clic fuera del contenido
-  document.addEventListener('click', e => {
-    if (!carrusel.classList.contains('oculto')) {
-      carrusel.classList.add('oculto');
-    }
-  });
-
-  // Evita que la apertura del carrusel dispare el cierre
-  const botonesAbrir = document.querySelectorAll('.btn-servicio, .dropdown-content a');
-  botonesAbrir.forEach(btn => {
-    btn.addEventListener('click', e => {
+  const carruselContenido = document.querySelector('.carrusel-contenido');
+  if (carrusel && carruselContenido) {
+    carruselContenido.addEventListener('click', e => {
       e.stopPropagation();
     });
-  });
-}
 
+    document.addEventListener('click', e => {
+      if (!carrusel.classList.contains('oculto')) {
+        carrusel.classList.add('oculto');
+        carrusel.classList.remove('activo'); // ✅ Ocultar también en móviles
+      }
+    });
+
+    const botonesAbrir = document.querySelectorAll('.btn-servicio, .dropdown-content a');
+    botonesAbrir.forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+      });
+    });
+  }
 
   // === ANIMACIÓN DE HEXÁGONOS ===
   const hexagons = Array.from(document.querySelectorAll('.hexagon'));
@@ -251,14 +248,13 @@ if (carrusel && carruselContenido) {
     setInterval(updateHexagons, 10000);
   });
 
-  // === CARRUSEL DECORATIVO (AUTOMÁTICO, SIN FLECHAS) ===
+  // === CARRUSEL DECORATIVO (AUTOMÁTICO) ===
   const slidesContainer = document.getElementById('slides');
   if (slidesContainer) {
-    const gap = 16; // debe coincidir con CSS gap
+    const gap = 16;
     const slides = slidesContainer.children;
     const slideCount = slides.length;
 
-    // Duplicar contenido para loop infinito
     slidesContainer.innerHTML += slidesContainer.innerHTML;
 
     let slideWidth = slides[0].offsetWidth;
@@ -281,12 +277,9 @@ if (carrusel && carruselContenido) {
       totalWidth = (slideWidth + gap) * slideCount;
     }
 
-    window.addEventListener('resize', () => {
-      recalcWidth();
-    });
+    window.addEventListener('resize', recalcWidth);
 
     recalcWidth();
     animate();
   }
-  
 });
