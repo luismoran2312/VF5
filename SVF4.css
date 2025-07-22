@@ -1152,20 +1152,6 @@ button:focus {
     display: block;
   }
 
-  /* Botón X solo visible en móvil */
-  .cerrar-modal {
-    display: block;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1.8rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 1100;
-    color: var(--dark-purple); /* o el color que prefieras */
-  }
-
   /* Ocultar elementos innecesarios en móvil */
   .flecha,
   .paginacion-servicios {
@@ -1181,9 +1167,3 @@ button:focus {
     display: block;
   }
 }
-
-/* Ocultar la "X" en escritorio */
-.cerrar-modal {
-  display: none;
-}
-

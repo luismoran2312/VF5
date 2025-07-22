@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const isDesktop = window.innerWidth > 768;
+  const cerrarBtn = document.querySelector(".cerrar-modal"); 
 
   // === ACTIVACIÓN DE BOTONES DEL MENÚ EN ESCRITORIO ===
   if (isDesktop) {
@@ -170,29 +171,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // === CERRAR CARRUSEL SI HACES CLIC FUERA DE SU CONTENIDO ===
-  const carruselContenido = document.querySelector('.carrusel-contenido');
-  if (carrusel && carruselContenido) {
+const carruselContenido = document.querySelector('.carrusel-contenido');
+if (carrusel && carruselContenido) {
 
-    // Evitar cierre si haces clic dentro del contenido
-    carruselContenido.addEventListener('click', e => {
+  // Evitar cierre si haces clic dentro del contenido
+  carruselContenido.addEventListener('click', e => {
+    e.stopPropagation();
+  });
+
+  // Cerrar si haces clic fuera del contenido
+  document.addEventListener('click', e => {
+    if (!carrusel.classList.contains('oculto')) {
+      carrusel.classList.add('oculto');
+    }
+  });
+
+  // Evita que la apertura del carrusel dispare el cierre
+  const botonesAbrir = document.querySelectorAll('.btn-servicio, .dropdown-content a');
+  botonesAbrir.forEach(btn => {
+    btn.addEventListener('click', e => {
       e.stopPropagation();
     });
+  });
+}
 
-    // Cerrar si haces clic fuera del contenido
-    document.addEventListener('click', e => {
-      if (!carrusel.classList.contains('oculto')) {
-        carrusel.classList.add('oculto');
-      }
-    });
-
-    // Evita que la apertura del carrusel dispare el cierre
-    const botonesAbrir = document.querySelectorAll('.btn-servicio, .dropdown-content a');
-    botonesAbrir.forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.stopPropagation(); // <- esto evita el cierre inmediato
-      });
-    });
-  }
 
   // === ANIMACIÓN DE HEXÁGONOS ===
   const hexagons = Array.from(document.querySelectorAll('.hexagon'));
@@ -286,41 +288,5 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcWidth();
     animate();
   }
-
-  const isMobile = window.innerWidth <= 768;
-  const cerrarBtn = document.querySelector(".cerrar-modal"); 
-
-  // Cerrar modal con botón "X"
-  if (cerrarBtn) {
-    cerrarBtn.addEventListener("click", () => {
-      carrusel.classList.remove("activo");
-      carrusel.classList.add("oculto");
-    });
-  }
-
-  if (isMobile) {
-  // Manejar clic en botones "Ver más"
-  document.querySelectorAll(".btn-servicio").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const targetId = btn.dataset.target;
-
-      // Mostrar modal (carrusel)
-      carrusel.classList.add("activo");
-      carrusel.classList.remove("oculto");
-
-      // Mostrar solo la sección correspondiente
-      document.querySelectorAll(".detalle-servicio").forEach(seccion => {
-        seccion.classList.remove("activo");
-        seccion.classList.add("oculto");
-        if (seccion.id === targetId) {
-          seccion.classList.add("activo");
-          seccion.classList.remove("oculto");
-        }
-      });
-    });
-  });
-
   
-}
-
 });
